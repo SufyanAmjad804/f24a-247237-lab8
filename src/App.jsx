@@ -26,42 +26,57 @@ function BookSlip({ onAdd }) {
   const [message, setMessage] = useState("");
 
   function handleAdd() {
-  if (title.trim() === "" || price.trim() === "") {
-    return;
+    if (title.trim() === "" || price.trim() === "") {
+      return;
+    }
+
+    if (copies.trim() === "") {
+      setMessage("Type the copies.");
+      return;
+    }
+
+    onAdd({
+      title: title.trim(),
+      price: Number(price),
+      copies: Number(copies)
+    });
+
+    setTitle("");
+    setPrice("");
+    setCopies("");
+    setMessage("");
   }
-
-  if (copies.trim() === "") {
-    setMessage("Type the copies.");
-    return;
-  }
-
-  onAdd({
-    title: title.trim(),
-    price: Number(price),
-    copies: Number(copies)
-  });
-
-  setTitle("");
-  setPrice("");
-  setCopies("");
-  setMessage("");
-}
 
   return (
     <div>
       <h2>The Order Desk</h2>
 
-      <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-      <input placeholder="Price" type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
-      <input placeholder="Copies" type="number" value={copies} onChange={(e) => setCopies(e.target.value)} />
+      <input
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+
+      <input
+        placeholder="Price"
+        type="number"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      />
+
+      <input
+        placeholder="Copies"
+        type="number"
+        value={copies}
+        onChange={(e) => setCopies(e.target.value)}
+      />
 
       <button onClick={handleAdd}>Add</button>
+
       {message && <p>{message}</p>}
     </div>
   );
 }
-
-
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -70,17 +85,29 @@ function App() {
     setBooks((previousBooks) => [...previousBooks, book]);
   }
 
-  const totalCopies = books.reduce((sum, book) => sum + book.copies, 0);
+  // Topic 10: Calculate total copies
+  const totalCopies = books.reduce(
+    (sum, book) => sum + book.copies,
+    0
+  );
 
   return (
     <div>
-      <header style={{ backgroundColor: "crimson", color: "white", padding: "20px" }}>
+      <header
+        style={{
+          backgroundColor: "crimson",
+          color: "white",
+          padding: "20px"
+        }}
+      >
         <h1>Hostel store</h1>
       </header>
 
       <main>
         <BookSlip onAdd={addBook} />
+
         <BookList books={books} />
+
         <h2>Copies: {totalCopies}</h2>
       </main>
 
