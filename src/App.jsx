@@ -58,7 +58,7 @@ function App() {
         <BookSlip />
       </main>
 
-      <footer>Roll Number: 247237</footer>
+      <footer>Roll Number:  247237</footer>
     </div>
   );
 }
