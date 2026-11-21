@@ -1,5 +1,8 @@
-
 import { useState } from "react";
+
+
+
+
 
 function BookSlip() {
   const [title, setTitle] = useState("");
@@ -49,11 +52,13 @@ function App() {
         <h1>Hostel store</h1>
       </header>
 
+      
+
       <main>
         <BookSlip />
       </main>
 
-      <footer>Roll Number: 247237</footer>
+      <footer>Roll Number:  247237</footer>
     </div>
   );
 }
