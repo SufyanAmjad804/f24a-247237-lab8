@@ -1,18 +1,34 @@
 
 import { useState } from "react";
 
+function BookList({ books }) {
+  return (
+    <div>
+      <h2>Book List</h2>
+
+      {books.length === 0 ? (
+        <p>The list is empty.</p>
+      ) : (
+        books.map((book, index) => (
+          <p key={index}>
+            {book.title} - {book.price} - {book.copies}
+          </p>
+        ))
+      )}
+    </div>
+  );
+}
+
 function BookSlip({ onAdd }) {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [copies, setCopies] = useState("");
 
   function handleAdd() {
-    if (title.trim() === "" || price.trim() === "" || copies.trim() === "") {
-      return;
-    }
+    if (title.trim() === "" || price.trim() === "" || copies.trim() === "") return;
 
     onAdd({
-      title: title,
+      title: title.trim(),
       price: Number(price),
       copies: Number(copies)
     });
@@ -26,20 +42,9 @@ function BookSlip({ onAdd }) {
     <div>
       <h2>The Order Desk</h2>
 
-      <label>Title</label>
-      <input value={title} onChange={(e) => setTitle(e.target.value)} />
-
-      <br /><br />
-
-      <label>Price</label>
-      <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
-
-      <br /><br />
-
-      <label>Copies</label>
-      <input type="number" value={copies} onChange={(e) => setCopies(e.target.value)} />
-
-      <br /><br />
+      <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
+      <input placeholder="Price" type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+      <input placeholder="Copies" type="number" value={copies} onChange={(e) => setCopies(e.target.value)} />
 
       <button onClick={handleAdd}>Add</button>
     </div>
@@ -53,6 +58,8 @@ function App() {
     setBooks((previousBooks) => [...previousBooks, book]);
   }
 
+  const totalCopies = books.reduce((sum, book) => sum + book.copies, 0);
+
   return (
     <div>
       <header style={{ backgroundColor: "crimson", color: "white", padding: "20px" }}>
@@ -61,16 +68,8 @@ function App() {
 
       <main>
         <BookSlip onAdd={addBook} />
-
-        <h2>Book List</h2>
-
-        {books.map((book, index) => (
-          <p key={index}>
-            {book.title} - {book.price} - {book.copies}
-          </p>
-        ))}
-
-        <h2>Copies: {books.reduce((sum, book) => sum + book.copies, 0)}</h2>
+        <BookList books={books} />
+        <h2>Copies: {totalCopies}</h2>
       </main>
 
       <footer>Roll Number: 247237</footer>
