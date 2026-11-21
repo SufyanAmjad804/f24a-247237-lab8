@@ -23,20 +23,29 @@ function BookSlip({ onAdd }) {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [copies, setCopies] = useState("");
+  const [message, setMessage] = useState("");
 
   function handleAdd() {
-    if (title.trim() === "" || price.trim() === "" || copies.trim() === "") return;
-
-    onAdd({
-      title: title.trim(),
-      price: Number(price),
-      copies: Number(copies)
-    });
-
-    setTitle("");
-    setPrice("");
-    setCopies("");
+  if (title.trim() === "" || price.trim() === "") {
+    return;
   }
+
+  if (copies.trim() === "") {
+    setMessage("Type the copies.");
+    return;
+  }
+
+  onAdd({
+    title: title.trim(),
+    price: Number(price),
+    copies: Number(copies)
+  });
+
+  setTitle("");
+  setPrice("");
+  setCopies("");
+  setMessage("");
+}
 
   return (
     <div>
@@ -47,6 +56,7 @@ function BookSlip({ onAdd }) {
       <input placeholder="Copies" type="number" value={copies} onChange={(e) => setCopies(e.target.value)} />
 
       <button onClick={handleAdd}>Add</button>
+      {message && <p>{message}</p>}
     </div>
   );
 }
